@@ -2,6 +2,7 @@ package org.frogforce503.robot2025.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ArmIOSpark implements ArmIO{
@@ -17,7 +18,14 @@ public class ArmIOSpark implements ArmIO{
     }
 
     public void updateInputs(ArmIOData inputs){
-      
+      inputs = new ArmIOData(
+        encoder.getPosition(),
+        encoder.getVelocity(),
+        motor.isMotorConnected(),
+        motor.getMotorTemperature(),
+        motor.getBusVoltage(),
+        motor.getOutputCurrent()
+      );
     }
 
     public double getPosition(){
@@ -40,7 +48,7 @@ public class ArmIOSpark implements ArmIO{
     }
 
     public void setOperatingMode(){
-        
+        config.idleMode(IdleMode.kBrake);
     }
 
     public void stop(){
