@@ -20,7 +20,7 @@ public interface ArmIO {
         double motorCurrent  // Current current draw of the motor
     ){}
 
-    public void updateInputs(ArmIOData inputs);
+    public void updateInputs(ArmIOInputs inputs);
     // Updates the input data for the ArmIO subsystem
 
     public double getPosition();
@@ -35,7 +35,7 @@ public interface ArmIO {
     public void setPID(double p, double i, double d);
     // Sets the PID constants for the arm controller
 
-    public void setOperatingMode();
+    public void setIdleMode(boolean isBrake);
     // Sets the operating mode of the arm (e.g. position control, velocity control, etc.)
 
     public void stop();

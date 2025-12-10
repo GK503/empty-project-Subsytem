@@ -1,61 +1,80 @@
 package org.frogforce503.robot2025.subsystems;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ArmIOSpark implements ArmIO{
-    RelativeEncoder encoder;
+    SparkAbsoluteEncoder encoder;
     SparkMax motor;
-    SparkMaxConfig config;
+    SparkMaxConfig motorconfig;
 
     public ArmIOSpark(int CANID, MotorType MotorType){
         motor = new SparkMax(CANID, MotorType);
-        SparkMaxConfig motorconfig = new SparkMaxConfig();
-        motor.configure(motorconfig, null, null);
-        encoder = motor.getEncoder();
+        encoder = motor.getAbsoluteEncoder();
+        motorconfig = new SparkMaxConfig();
+        motorconfig.closedLoop.pid(0.0, 0.0, 0.0);
+        motorconfig.idleMode(IdleMode.kBrake);
+        motorconfig.absoluteEncoder.zeroOffset(0.0);
+        motor.configure(motorconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public void updateInputs(ArmIOData inputs){
-      inputs = new ArmIOData(
+    @Override
+    public void updateInputs(ArmIOInputs inputs){
+    inputs.data = new ArmIOData(
         encoder.getPosition(),
         encoder.getVelocity(),
-        motor.isMotorConnected(),
+        false,
         motor.getMotorTemperature(),
         motor.getBusVoltage(),
         motor.getOutputCurrent()
       );
     }
 
+    @Override
     public double getPosition(){
         return encoder.getPosition();
     }
 
+    @Override
     public double getVelocity(){
         return encoder.getVelocity();
     }
 
+    @Override
     public void setPosition(double setPoint){
-        encoder.setPosition(setPoint);
+        motor.getClosedLoopController().setReference(setPoint, ControlType.kVelocity);
     }
 
+    @Override
     public void setPID(double p, double i, double d) {
-        config.closedLoop.p(p);
-        config.closedLoop.i(i);
-        config.closedLoop.d(d);
-        motor.configure(config, null, null);
+        motorconfig.closedLoop.p(p);
+        motorconfig.closedLoop.i(i);
+        motorconfig.closedLoop.d(d);
+        motor.configure(motorconfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
-    public void setOperatingMode(){
-        config.idleMode(IdleMode.kBrake);
+    @Override
+    public void setIdleMode(boolean isBrake){
+        if (isBrake == true){
+            motorconfig.idleMode(IdleMode.kBrake);
+        } else {
+            motorconfig.idleMode(IdleMode.kCoast);
+        }
+        motor.configure(motorconfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
+    @Override
     public void stop(){
        motor.stopMotor();
     }
 
+    @Override
     public void reset(){
-        encoder.setPosition(0);
+        motor.getClosedLoopController().setReference(0.0, ControlType.kVelocity);
     }
 }
