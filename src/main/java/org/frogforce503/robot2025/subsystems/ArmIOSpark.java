@@ -77,4 +77,25 @@ public class ArmIOSpark implements ArmIO{
     public void reset(){
         motor.getClosedLoopController().setReference(0.0, ControlType.kVelocity);
     }
+
+    @Override
+    public double getTemp(){
+        return motor.getMotorTemperature();
+    }
+
+    @Override
+    public double getBusVoltage(){
+        return motor.getBusVoltage();
+    }
+
+    @Override
+    public double getOutputCurrent(){
+        return motor.getOutputCurrent();
+    }
+
+    @Override
+    public boolean isMotorConnected(){
+        double voltage = motor.getBusVoltage();
+        return voltage > 1.0;
+    }
 }

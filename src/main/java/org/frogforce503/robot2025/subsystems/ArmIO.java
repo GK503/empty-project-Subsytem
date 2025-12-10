@@ -43,4 +43,16 @@ public interface ArmIO {
 
     public void reset();
     // Resets the arm encoder and controller
+
+    public double getTemp();
+    // Returns the current temperature of the arm motor
+
+    public double getOutputCurrent();
+    // Returns the current output current of the arm motor
+
+    public double getBusVoltage();
+    // Returns the current bus voltage of the arm motor
+
+    public boolean isMotorConnected();
+    // checks weather the motor is connected
 }
