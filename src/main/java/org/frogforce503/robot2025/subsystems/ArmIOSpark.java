@@ -29,7 +29,7 @@ public class ArmIOSpark implements ArmIO{
        getPosition(),
        getVelocity(),
        isMotorConnected(),
-       getMotorTemperature(),
+       getTemp(),
        getBusVoltage(),
        getOutputCurrent()
      );
