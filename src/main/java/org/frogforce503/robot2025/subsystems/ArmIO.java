@@ -29,10 +29,15 @@ public interface ArmIO {
     public double getVelocity();
     // Returns the current velocity of the arm in radians per second
 
-    public void setPosition(double setPoint);
+    public void setVoltage(double voltage);
+    // Sets the desired velocity of the arm
+
+    public double getVoltage();
+
+    public void setPosition(double setPointRadans);
     // Sets the desired position of the arm
 
-    public void setPID(double p, double i, double d);
+    public void setPID(double p, double i, double d, int slot);
     // Sets the PID constants for the arm controller
 
     public void setIdleMode(boolean isBrake);
@@ -49,9 +54,6 @@ public interface ArmIO {
 
     public double getOutputCurrent();
     // Returns the current output current of the arm motor
-
-    public double getBusVoltage();
-    // Returns the current bus voltage of the arm motor
 
     public boolean isMotorConnected();
     // checks weather the motor is connected

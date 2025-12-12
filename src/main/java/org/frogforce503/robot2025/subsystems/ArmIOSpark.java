@@ -20,6 +20,13 @@ public class ArmIOSpark implements ArmIO{
        motorconfig.closedLoop.pid(0.0, 0.0, 0.0);
        motorconfig.idleMode(IdleMode.kBrake);
        motorconfig.absoluteEncoder.zeroOffset(0.0);
+       motorconfig.inverted(false);
+       motorconfig.smartCurrentLimit(40);
+       motorconfig.voltageCompensation(12);
+       motorconfig.absoluteEncoder
+              .zeroOffset(0)
+              .positionConversionFactor(2 * Math.PI) // Rotations to Radians
+              .velocityConversionFactor(2 * Math.PI / 60);
        motor.configure(motorconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
    }
 
@@ -30,9 +37,9 @@ public class ArmIOSpark implements ArmIO{
        getVelocity(),
        isMotorConnected(),
        getTemp(),
-       getBusVoltage(),
+       getVoltage(),
        getOutputCurrent()
-     );
+       );
    }
 
    @Override
@@ -46,12 +53,12 @@ public class ArmIOSpark implements ArmIO{
    }
 
    @Override
-   public void setPosition(double setPoint){
-       motor.getClosedLoopController().setReference(setPoint, ControlType.kVelocity);
+   public void setPosition(double setPointRadians){
+       motor.getClosedLoopController().setReference(setPointRadians, ControlType.kVelocity);
    }
 
    @Override
-   public void setPID(double p, double i, double d) {
+   public void setPID(double p, double i, double d, int slot) {
        motorconfig.closedLoop.p(p);
        motorconfig.closedLoop.i(i);
        motorconfig.closedLoop.d(d);
@@ -84,11 +91,6 @@ public class ArmIOSpark implements ArmIO{
    }
 
    @Override
-   public double getBusVoltage(){
-       return motor.getBusVoltage();
-   }
-
-   @Override
    public double getOutputCurrent(){
        return motor.getOutputCurrent();
    }
@@ -97,6 +99,16 @@ public class ArmIOSpark implements ArmIO{
    public boolean isMotorConnected(){
        double voltage = motor.getBusVoltage();
        return voltage > 0.0;
-   }
+    }
+
+    @Override
+    public void setVoltage(double voltage) {
+        motor.setVoltage(voltage);
+    }
+
+    @Override
+    public double getVoltage() {
+        return motor.getBusVoltage();
+    }
 }
 
