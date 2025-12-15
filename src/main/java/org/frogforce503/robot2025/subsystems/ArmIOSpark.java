@@ -1,12 +1,15 @@
 package org.frogforce503.robot2025.subsystems;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.ClosedLoopSlot;
 
 public class ArmIOSpark implements ArmIO{
    SparkAbsoluteEncoder encoder;
@@ -17,7 +20,7 @@ public class ArmIOSpark implements ArmIO{
        motor = new SparkMax(CANID, MotorType);
        encoder = motor.getAbsoluteEncoder();
        motorconfig = new SparkMaxConfig();
-       motorconfig.closedLoop.pid(0.0, 0.0, 0.0);
+       motorconfig.closedLoop.pid(0.0, 0.0, 0.0, null);
        motorconfig.idleMode(IdleMode.kBrake);
        motorconfig.absoluteEncoder.zeroOffset(0.0);
        motorconfig.inverted(false);
@@ -58,10 +61,8 @@ public class ArmIOSpark implements ArmIO{
    }
 
    @Override
-   public void setPID(double p, double i, double d, int slot) {
-       motorconfig.closedLoop.p(p);
-       motorconfig.closedLoop.i(i);
-       motorconfig.closedLoop.d(d);
+   public void setPID(double p, double i, double d, ClosedLoopSlot slot) {
+       motorconfig.closedLoop.pid(p, i, d, slot);
        motor.configure(motorconfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
    }
 
@@ -110,5 +111,9 @@ public class ArmIOSpark implements ArmIO{
     public double getVoltage() {
         return motor.getBusVoltage();
     }
-}
 
+    @Override
+    public void setPIDSlot(ClosedLoopSlot slot) {
+        motor.getClosedLoopController().setReference(0.0, ControlType.kVelocity, slot);
+    }
+}

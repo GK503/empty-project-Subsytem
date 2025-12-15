@@ -2,6 +2,8 @@ package org.frogforce503.robot2025.subsystems;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+
 public interface ArmIO { 
     // Defines an interface for the ArmIO subsystem
 
@@ -37,7 +39,7 @@ public interface ArmIO {
     public void setPosition(double setPointRadans);
     // Sets the desired position of the arm
 
-    public void setPID(double p, double i, double d, int slot);
+    public void setPID(double p, double i, double d, ClosedLoopSlot slot);
     // Sets the PID constants for the arm controller
 
     public void setIdleMode(boolean isBrake);
@@ -57,4 +59,7 @@ public interface ArmIO {
 
     public boolean isMotorConnected();
     // checks weather the motor is connected
+
+    public void setPIDSlot(ClosedLoopSlot slot);
+    // sets the PID slot
 }
