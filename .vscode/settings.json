@@ -64,4 +64,5 @@
   "code-runner.executorMap": {
     "java": "\"C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-25.0.0-hotspot\\\\bin\\\\javac\" $fileName && \"C:\\\\Program Files\\\\Eclipse Adoptium\\\\jdk-25.0.0-hotspot\\\\bin\\\\java\" $fileNameWithoutExt"
   }
+  
 }
