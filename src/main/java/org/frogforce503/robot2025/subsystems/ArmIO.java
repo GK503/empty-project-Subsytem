@@ -25,17 +25,6 @@ public interface ArmIO {
     public void updateInputs(ArmIOInputs inputs);
     // Updates the input data for the ArmIO subsystem
 
-    public double getPosition();
-    // Returns the current position of the arm in radians
-
-    public double getVelocity();
-    // Returns the current velocity of the arm in radians per second
-
-    public void setVoltage(double voltage);
-    // Sets the desired velocity of the arm
-
-    public double getVoltage();
-
     public void setPosition(double setPointRadans);
     // Sets the desired position of the arm
 
@@ -50,12 +39,6 @@ public interface ArmIO {
 
     public void reset();
     // Resets the arm encoder and controller
-
-    public double getTemp();
-    // Returns the current temperature of the arm motor
-
-    public double getOutputCurrent();
-    // Returns the current output current of the arm motor
 
     public boolean isMotorConnected();
     // checks weather the motor is connected

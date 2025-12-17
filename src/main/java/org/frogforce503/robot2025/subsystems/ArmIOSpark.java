@@ -45,12 +45,10 @@ public class ArmIOSpark implements ArmIO{
        );
    }
 
-   @Override
    public double getPosition(){
        return encoder.getPosition();
    }
 
-   @Override
    public double getVelocity(){
        return encoder.getVelocity();
    }
@@ -86,12 +84,10 @@ public class ArmIOSpark implements ArmIO{
        motor.getClosedLoopController().setReference(0.0, ControlType.kVelocity);
    }
 
-   @Override
    public double getTemp(){
        return motor.getMotorTemperature();
    }
 
-   @Override
    public double getOutputCurrent(){
        return motor.getOutputCurrent();
    }
@@ -102,12 +98,10 @@ public class ArmIOSpark implements ArmIO{
        return voltage > 0.0;
     }
 
-    @Override
     public void setVoltage(double voltage) {
         motor.setVoltage(voltage);
     }
 
-    @Override
     public double getVoltage() {
         return motor.getBusVoltage();
     }
