@@ -3,6 +3,7 @@ package org.frogforce503.robot2025.subsystems;
 import org.littletonrobotics.junction.AutoLog;
 
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public interface ArmIO { 
     // Defines an interface for the ArmIO subsystem
@@ -37,12 +38,12 @@ public interface ArmIO {
     public void stop();
     // Stops the arm motor
 
-    public void reset();
+   public void reset(int CANID, MotorType MotorType);
     // Resets the arm encoder and controller
 
     public boolean isMotorConnected();
     // checks weather the motor is connected
 
-    public void setPIDSlot(ClosedLoopSlot slot);
+    public void setPIDSlot(int slot);
     // sets the PID slot
 }
