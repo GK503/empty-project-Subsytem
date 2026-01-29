@@ -1,5 +1,7 @@
 # FrogForce 503 2025 Robot Code
 
+My own practice on WPILIB FRC robotics (Basically first code i wrote)
+
 This repository contains the robot code for FrogForce 503's 2025 FRC competition robot. The project is built using WPILib's GradleRIO system and Java 17.
 
 ## Key Features
